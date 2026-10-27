@@ -19,6 +19,7 @@
     2. The GitHub link (hidden for now).
     3. The Miscellaneous page: ready blocks for more paintings, poems and photography.
   Images: cover.jpg, photo.jpg and the images/ folder sit next to this file.
+  Every picture opens full screen when clicked (see "Image viewer" in the styles and script).
 -->
 
 <script>
@@ -49,6 +50,13 @@
     --nav-bg: rgba(221, 229, 234, 0.94);
     --serif: "Newsreader", Georgia, "Times New Roman", serif;
     --sans: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    /* Image viewer: always dark, in both themes, so pictures stand out */
+    --lb-bg: rgba(9, 11, 15, 0.96);
+    --lb-text: #eef2f6;
+    --lb-muted: #a9b3bf;
+    --lb-btn: rgba(255, 255, 255, 0.08);
+    --lb-btn-hover: rgba(255, 255, 255, 0.18);
+    --lb-line: rgba(255, 255, 255, 0.2);
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
@@ -410,6 +418,45 @@
     body { background: #fff; color: #000; }
     a { color: inherit; }
     .rows > section { break-inside: avoid; }
+  }
+
+  /* ---------- Image viewer: click any picture to see it full screen ---------- */
+  main img { cursor: pointer; }
+  html.lb-open { overflow: hidden; }
+  .lightbox {
+    width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none;
+    margin: 0; padding: 0; border: 0; inset: 0;
+    background: var(--lb-bg); color: var(--lb-text); overflow: hidden;
+  }
+  .lightbox::backdrop { background: var(--lb-bg); }
+  .lightbox[open] { display: grid; place-items: center; }
+  .lb-figure {
+    margin: 0; width: 100%; height: 100%; min-width: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 4rem 1rem 2rem;
+  }
+  .lb-img {
+    display: block; max-width: 100%; max-height: calc(100vh - 6rem); max-height: calc(100dvh - 6rem);
+    width: auto; height: auto; object-fit: contain; border-radius: 4px; cursor: pointer;
+  }
+  .lb-btn {
+    width: 2.75rem; height: 2.75rem; padding: 0; display: grid; place-items: center; cursor: pointer;
+    background: var(--lb-btn); color: var(--lb-text); border: 1px solid var(--lb-line); border-radius: 50%;
+  }
+  .lb-btn:hover { background: var(--lb-btn-hover); }
+  .lb-btn:focus-visible { outline: 2px solid var(--lb-text); outline-offset: 2px; }
+  .lb-btn svg { width: 1.25rem; height: 1.25rem; }
+  .lb-close {
+    position: absolute; z-index: 1;
+    top: max(1rem, env(safe-area-inset-top, 0px)); right: max(1rem, env(safe-area-inset-right, 0px));
+  }
+  @media (max-width: 640px) {
+    .lb-figure { padding: 4rem 0.75rem 1.5rem; }
+    .lb-img { max-height: calc(100vh - 5.5rem); max-height: calc(100dvh - 5.5rem); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .lightbox[open] .lb-img { animation: lb-in 0.18s ease-out; }
+    @keyframes lb-in { from { opacity: 0; transform: scale(0.985); } }
   }
 
   /* ---------- Pages: only the chosen page shows (all show if JavaScript is off) ---------- */
@@ -999,6 +1046,16 @@ Third line</p>
     </div>
   </footer>
 
+  <!-- Image viewer: filled in by the script when a picture is clicked -->
+  <dialog class="lightbox" aria-label="Image viewer">
+    <button class="lb-btn lb-close" type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="lb-figure">
+      <img class="lb-img" alt="">
+    </div>
+  </dialog>
+
   <script>
   (function () {
     var root = document.documentElement;
@@ -1058,6 +1115,48 @@ Third line</p>
       function shown() { if (img.naturalWidth > 0) img.parentNode.classList.remove("no-photo"); }
       if (img.complete) shown(); else img.addEventListener("load", shown);
     });
+
+    // Image viewer. Click (or press Enter on) any picture to see it as large as the screen allows.
+    // Esc, the close button or a click anywhere closes it.
+    // To show a sharper copy in the viewer, add data-full="path/to/large.jpg" to an image.
+    var lb = document.querySelector(".lightbox");
+    var mainEl = document.querySelector("main");
+    if (lb && typeof lb.showModal === "function" && mainEl) {
+      var lbImg = lb.querySelector(".lb-img");
+      var opener = null;
+
+      Array.prototype.forEach.call(mainEl.querySelectorAll("img"), function (img) {
+        img.setAttribute("tabindex", "0");
+        img.setAttribute("role", "button");
+        img.setAttribute("aria-label", "View larger: " + (img.alt || "picture"));
+      });
+
+      function lbOpen(img) {
+        opener = img;
+        lbImg.src = img.getAttribute("data-full") || img.currentSrc || img.src;
+        lbImg.alt = img.alt;
+        root.classList.add("lb-open");
+        lb.showModal();
+      }
+
+      mainEl.addEventListener("click", function (e) {
+        var img = e.target.closest("img");
+        if (img) { e.preventDefault(); lbOpen(img); }
+      });
+      mainEl.addEventListener("keydown", function (e) {
+        if ((e.key === "Enter" || e.key === " ") && e.target.tagName === "IMG") { e.preventDefault(); lbOpen(e.target); }
+      });
+
+      lb.querySelector(".lb-close").addEventListener("click", function () { lb.close(); });
+      lb.addEventListener("click", function (e) {
+        if (e.target === lb || e.target === lbImg || e.target.classList.contains("lb-figure")) lb.close();
+      });
+      lb.addEventListener("close", function () {
+        root.classList.remove("lb-open");
+        lbImg.removeAttribute("src");
+        if (opener) { try { opener.focus({ preventScroll: true }); } catch (err) {} }
+      });
+    }
   })();
   </script>
 </body>
