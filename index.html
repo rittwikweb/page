@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rittwik Hajra</title>
+<meta name="description" content="Rittwik Hajra is a doctoral research student in cryptography at the University of Tartu, Estonia. Interests: post-quantum cryptography, zero-knowledge proofs and efficient cryptographic implementations.">
+<meta name="author" content="Rittwik Hajra">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2328508f'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Georgia,serif' font-size='13' fill='%23ffffff'%3ERH%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Noto+Sans+Runic&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+
+<!--
+  Rittwik Hajra: academic website in one file.
+  Everything (layout, styles and the small script) lives in this file.
+  Search for "EDIT:" to find the places you may still want to change:
+    1. The CV button (hidden for now): upload cv.pdf, then show the button.
+    2. The GitHub link (hidden for now).
+    3. The Miscellaneous page: ready blocks for more paintings, poems and photography.
+  Images: cover.jpg, photo.jpg and the images/ folder sit next to this file.
+-->
+
+<script>
+  // Before the page paints: hide all but the current page, and apply a saved theme choice.
+  document.documentElement.classList.add("js");
+  try {
+    var t = localStorage.getItem("theme");
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+</script>
+
+<style>
+  :root {
+    /* Light theme: colours from The Imitation Game (steel blue, slate, ink navy, brass) */
+    --bg: #edf1f3;
+    --text: #1e2a35;
+    --heading: #2b4a5e;
+    --muted: #55636f;
+    --rule: #c9d3da;
+    --accent: #2e5e72;
+    --accent-soft: rgba(46, 94, 114, 0.11);
+    --accent-2: #9a7a45;
+    --band: #dde5ea;
+    --card: #f6f8f9;
+    --cover-a: #dbe4ea;
+    --cover-b: #c6d4dd;
+    --photo-bg: #dbe4ea;
+    --nav-bg: rgba(221, 229, 234, 0.94);
+    --serif: "Newsreader", Georgia, "Times New Roman", serif;
+    --sans: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14181f;
+      --text: #e3e8ef;
+      --heading: #e3e8ef;
+      --accent-2: #93b4ec;
+      --band: #14181f;
+      --card: #181d25;
+      --muted: #9ba6b6;
+      --rule: #29313c;
+      --accent: #93b4ec;
+      --accent-soft: rgba(147, 180, 236, 0.1);
+      --cover-a: #1b222c;
+      --cover-b: #253041;
+      --photo-bg: #1e2734;
+      --nav-bg: rgba(20, 24, 31, 0.9);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14181f;
+    --text: #e3e8ef;
+    --heading: #e3e8ef;
+    --accent-2: #93b4ec;
+    --band: #14181f;
+    --card: #181d25;
+    --muted: #9ba6b6;
+    --rule: #29313c;
+    --accent: #93b4ec;
+    --accent-soft: rgba(147, 180, 236, 0.1);
+    --cover-a: #1b222c;
+    --cover-b: #253041;
+    --photo-bg: #1e2734;
+    --nav-bg: rgba(20, 24, 31, 0.9);
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    background: var(--bg);
+    color: var(--text);
+    font: 400 1.125rem/1.65 var(--serif);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* Paints the strip above the sticky bar on phones with a notch. */
+  body::before {
+    content: ""; position: fixed; inset: 0 0 auto; z-index: 10;
+    height: env(safe-area-inset-top, 0px); background: var(--bg);
+  }
+  main { flex: 1; }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  p { margin: 0 0 1rem; }
+  .nw { white-space: nowrap; }
+
+  .wrap { width: 100%; max-width: 62rem; margin: 0 auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+
+  .skip {
+    position: absolute; left: 1rem; top: -3rem; z-index: 20;
+    background: var(--accent); color: var(--bg); padding: 0.5rem 0.9rem;
+    font: 500 0.9rem var(--sans); border-radius: 6px; text-decoration: none;
+  }
+  .skip:focus { top: 1rem; }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+    background: var(--nav-bg);
+    -webkit-backdrop-filter: saturate(140%) blur(8px);
+    backdrop-filter: saturate(140%) blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .topbar .wrap { display: flex; align-items: center; gap: 1.5rem; min-height: 3.5rem; }
+  .brand {
+    font: 600 0.98rem var(--sans); color: var(--text); text-decoration: none;
+    white-space: nowrap; letter-spacing: 0.005em;
+  }
+  .topbar nav { margin-left: auto; }
+  .nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.4rem; list-style: none; margin: 0; padding: 0; }
+  .nav a {
+    font: 500 0.9rem var(--sans); color: var(--muted); text-decoration: none; white-space: nowrap;
+    padding: 0.25rem 0; border-bottom: 2px solid transparent;
+  }
+  .nav a:hover { color: var(--text); }
+  .nav a[aria-current="page"] { color: var(--text); border-bottom-color: var(--accent); }
+
+  .theme-toggle {
+    flex: none; width: 2.1rem; height: 2.1rem; padding: 0;
+    display: grid; place-items: center; cursor: pointer;
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--rule); border-radius: 50%;
+  }
+  .theme-toggle:hover { color: var(--text); border-color: var(--muted); }
+  .theme-toggle svg { width: 1rem; height: 1rem; }
+  .theme-toggle .sun { display: none; }
+  :root[data-theme="dark"] .theme-toggle .sun { display: block; }
+  :root[data-theme="dark"] .theme-toggle .moon { display: none; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-toggle .sun { display: block; }
+    :root:not([data-theme="light"]) .theme-toggle .moon { display: none; }
+  }
+
+  /* ---------- Home header: the cover photo in its own 3:2 shape, a square portrait
+     over its lower corner, and the name beside it ---------- */
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
+    column-gap: 2.5rem; align-items: end; padding: 2.5rem 0 3rem;
+  }
+  .hero-media { position: relative; padding-bottom: 5.5rem; min-width: 0; }
+  .cover {
+    aspect-ratio: 3 / 2; width: 100%; max-width: 100%; border-radius: 12px; overflow: hidden;
+    background: linear-gradient(120deg, var(--cover-a), var(--cover-b));
+  }
+  .cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .cover.no-photo img { display: none; }
+
+  .portrait {
+    position: absolute; left: 1.5rem; bottom: 0;
+    width: 14.5rem; height: 14.5rem; max-width: 100%;
+    border-radius: 12px; overflow: hidden;
+    border: 5px solid var(--bg); background: var(--photo-bg);
+  }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .portrait .monogram {
+    display: none; width: 100%; height: 100%; place-items: center;
+    color: var(--accent); font: 500 4.2rem/1 var(--serif); letter-spacing: 0.02em;
+  }
+  .portrait.no-photo img { display: none; }
+  .portrait.no-photo .monogram { display: grid; }
+  .hero-text { min-width: 0; }
+  .name {
+    margin: 0 0 0.55rem; font-family: var(--serif); font-weight: 500;
+    font-size: clamp(2.2rem, 3.6vw, 2.9rem); line-height: 1.05; letter-spacing: -0.018em;
+    text-wrap: balance; color: var(--heading);
+  }
+  .role { margin: 0; font: 500 1.06rem/1.5 var(--sans); }
+  .affil { margin: 0; font: 400 1rem/1.5 var(--sans); color: var(--muted); }
+  .links {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.3rem;
+    list-style: none; padding: 0; margin: 1.1rem 0 0; font: 500 0.95rem var(--sans);
+  }
+  .links .cv {
+    display: inline-block; padding: 0.28rem 0.85rem; border: 1px solid var(--accent);
+    border-radius: 6px; text-decoration: none;
+  }
+  .links .cv:hover { background: var(--accent-soft); }
+
+
+  /* ---------- Rows: heading on the left, content on the right ---------- */
+  .rows > section {
+    display: grid; grid-template-columns: 10rem minmax(0, 1fr); column-gap: 3rem;
+    padding: 3rem 0; border-top: 1px solid var(--rule);
+  }
+  .view:not(.home-view) .rows > section:first-child { border-top: 0; padding-top: 3.5rem; padding-bottom: 4rem; }
+  .rows > section > h2 {
+    margin: 0; font: 500 1.4rem/1.3 var(--serif); letter-spacing: -0.005em; color: var(--heading);
+  }
+  .rows > section > h1 {
+    margin: 0; align-self: start; position: sticky; top: 5.25rem;
+    font: 500 1.9rem/1.2 var(--serif); letter-spacing: -0.012em; color: var(--heading);
+  }
+  .content { max-width: 44rem; min-width: 0; }
+  .content > :last-child { margin-bottom: 0; }
+  .prose p { max-width: 64ch; }
+
+  .label { font: 600 0.9rem/1.4 var(--sans); color: var(--muted); margin: 1.75rem 0 0.6rem; }
+  .interests {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; gap: 0.4rem;
+  }
+  .interests li { position: relative; padding-left: 1.1rem; }
+  .interests li::before {
+    content: ""; position: absolute; left: 0; top: 0.68em; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent-2);
+  }
+
+  /* Publications */
+  .note { font: 400 0.88rem/1.5 var(--sans); color: var(--muted); margin: 0 0 1.75rem; }
+  .year {
+    display: flex; align-items: center; gap: 0.9rem;
+    font: 600 0.88rem var(--sans); color: var(--muted); margin: 2.4rem 0 1.2rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .year::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
+  .note + .year { margin-top: 0; }
+
+  .pubs, .entries { list-style: none; padding: 0; margin: 0; }
+  .pub { margin: 0 0 1.7rem; }
+  .pub:last-child { margin-bottom: 0; }
+  .pub-title { margin: 0 0 0.25rem; font-weight: 500; font-size: 1.16rem; line-height: 1.42; text-wrap: balance; }
+  .pub-authors { margin: 0 0 0.35rem; color: var(--muted); font-size: 1.02rem; }
+  .pub-authors strong { color: var(--text); font-weight: 600; }
+  .pub-meta {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 1rem;
+    margin: 0; font: 500 0.88rem var(--sans);
+  }
+  .venue {
+    color: var(--accent); background: var(--accent-soft);
+    padding: 0.12rem 0.55rem; border-radius: 4px; font-weight: 600;
+  }
+  .pub-desc { margin: 0.6rem 0 0.7rem; font-size: 1.02rem; max-width: 64ch; }
+  .more { margin: 1.6rem 0 0; font: 500 0.95rem var(--sans); }
+
+  /* Experience, education, talks */
+  .entry { margin: 0 0 1.55rem; }
+  .entry:last-child { margin-bottom: 0; }
+  .entry-head {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.15rem 1.5rem;
+  }
+  .entry-title { margin: 0; font-weight: 500; font-size: 1.12rem; line-height: 1.42; }
+  .entry-date {
+    font: 500 0.86rem var(--sans); color: var(--muted); white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .entry-org { margin: 0.1rem 0 0; color: var(--muted); font-size: 1.02rem; }
+  .entry-note { margin: 0.35rem 0 0; font-size: 1.02rem; }
+
+  /* Contact */
+  .contact { margin: 1.5rem 0 0; display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 0.9rem 1.5rem; }
+  .contact dt { font: 600 0.9rem/1.9 var(--sans); color: var(--muted); }
+  .contact dd { margin: 0; }
+  .contact .email { font-size: 1.2rem; overflow-wrap: anywhere; }
+  .tag { font: 500 0.78rem var(--sans); color: var(--accent); background: var(--accent-soft); padding: 0.1rem 0.45rem; border-radius: 4px; margin-left: 0.5rem; vertical-align: 0.15em; }
+
+  /* Miscellaneous */
+  .sub { margin: 0 0 0.6rem; font: 500 1.3rem/1.3 var(--serif); color: var(--heading); }
+  .sub:not(:first-child) { margin-top: 2.4rem; }
+  .sub-small { margin: 1.75rem 0 0.9rem; font: 600 0.9rem/1.4 var(--sans); color: var(--muted); }
+  .figure { margin: 1.75rem 0; }
+  .figure img { width: 100%; height: auto; display: block; border-radius: 8px; border: 1px solid var(--rule); }
+  .figure figcaption { padding-top: 0.5rem; font: 400 0.88rem/1.5 var(--sans); color: var(--muted); }
+  .part-title { margin: 2.2rem 0 0.6rem; font: 500 1.15rem/1.4 var(--serif); color: var(--heading); }
+  .misc-part > .sub + .part-title { margin-top: 0.6rem; }
+  .theme-title { margin: 1.8rem 0 0.45rem; font: 600 0.9rem/1.4 var(--sans); color: var(--muted); }
+  .bullets { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: 0.55rem; max-width: 64ch; }
+  .bullets li { position: relative; padding-left: 1.1rem; }
+  .bullets li::before {
+    content: ""; position: absolute; left: 0; top: 0.68em; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent-2);
+  }
+  /* Stage photo: a portrait picture beside the Ekalavya text */
+  .stage-photo { float: right; width: 15.5rem; margin: 0.35rem 0 1.25rem 2rem; }
+  .slot {
+    aspect-ratio: 4 / 5; max-width: 100%; border-radius: 8px; overflow: hidden;
+    background: linear-gradient(120deg, var(--cover-a), var(--cover-b));
+  }
+  .slot img { width: 100%; height: 100%; object-fit: cover; display: block; border: 0; border-radius: 0; }
+  .slot.no-photo img { display: none; }
+  /* Fold-out panels on the Miscellaneous page */
+  .drop { border: 1px solid var(--rule); border-radius: 10px; background: var(--card); }
+  .drop + .drop { margin-top: 1rem; }
+  .drop > summary {
+    list-style: none; cursor: pointer; border-radius: 10px;
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 1rem; align-items: center;
+    padding: 1.05rem 1.25rem;
+  }
+  .drop > summary::-webkit-details-marker { display: none; }
+  .drop > summary:hover { background: var(--accent-soft); }
+  .drop[open] > summary { border-radius: 10px 10px 0 0; }
+  .drop-title { grid-column: 1; margin: 0; font: 500 1.3rem/1.3 var(--serif); color: var(--heading); }
+  .drop-teaser { grid-column: 1; font: 400 0.9rem/1.45 var(--sans); color: var(--muted); }
+  .chev { grid-column: 2; grid-row: 1 / span 2; width: 1.3rem; height: 1.3rem; color: var(--accent); }
+  @media (prefers-reduced-motion: no-preference) { .chev { transition: transform 0.2s ease; } }
+  .drop[open] .chev { transform: rotate(180deg); }
+  .drop-body { padding: 1.4rem 1.25rem 1.6rem; border-top: 1px solid var(--rule); }
+  .drop-body > :first-child { margin-top: 0; }
+  .drop-body > :last-child { margin-bottom: 0; }
+  .drop-body::after { content: ""; display: block; clear: both; }
+  .soon { color: var(--muted); font-style: italic; }
+  /* A quoted stanza: one line per span, with the poet's indents */
+  .verse { margin: 0.4rem 0 0; padding: 0.2rem 0 0.2rem 1.1rem; border-left: 2px solid var(--accent-2); }
+  .verse p { margin: 0; font-style: italic; line-height: 1.7; }
+  .verse span { display: block; padding-left: 1.6em; text-indent: -1.6em; }
+  .verse .in1 { margin-left: 1.6em; }
+  .verse .in2 { margin-left: 3.6em; }
+  .verse footer { margin-top: 0.7rem; font: 400 0.86rem/1.45 var(--sans); color: var(--muted); }
+  .verse cite { font-style: italic; }
+  @media (max-width: 480px) { .verse .in1 { margin-left: 0.8em; } .verse .in2 { margin-left: 1.6em; } }
+  /* Runes (Elder Futhark) need their own font */
+  .runes, .rune { font-family: "Noto Sans Runic", "Segoe UI Historic", "Segoe UI Symbol", "Apple Symbols", sans-serif; }
+  .runes { margin: 0.2rem 0 0.8rem; font-size: 1.5rem; letter-spacing: 0.3em; color: var(--accent); }
+  .rune { color: var(--accent); }
+  .work-title { margin: 0 0 0.2rem; font: 500 1.16rem/1.4 var(--serif); }
+  .work-meta { margin: 0 0 0.7rem; font: 400 0.88rem/1.5 var(--sans); color: var(--muted); }
+
+  /* Paintings: picture beside its write-up */
+  .artwork { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 1.5rem; align-items: start; margin: 0 0 2.5rem; }
+  .artwork:last-child { margin-bottom: 0; }
+  .artwork + .artwork { padding-top: 2.5rem; border-top: 1px solid var(--rule); }
+  /* A wide entry: two pictures side by side (for example a drawing and its inverted copy), text below */
+  .artwork.wide { grid-template-columns: minmax(0, 1fr); gap: 1.1rem; }
+  .artwork.wide > div > :last-child { margin-bottom: 0; }
+  .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; }
+  .pair.stack { grid-template-columns: minmax(0, 1fr); }
+  .pair figure { margin: 0; }
+  .pair figcaption { padding-top: 0.4rem; font: 400 0.85rem/1.45 var(--sans); color: var(--muted); }
+  .artwork .work-title { margin-top: 0.1rem; }
+  .artwork img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--rule); }
+
+  /* Poems: line breaks are kept as typed */
+  .poem { margin: 0 0 2.5rem; }
+  .poem:last-child { margin-bottom: 0; }
+  .poem-text { white-space: pre-line; line-height: 1.75; margin: 0.6rem 0 0.6rem; }
+
+  /* Photography: a simple grid */
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 1rem; }
+  .gallery figure { margin: 0; }
+  .gallery img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; border-radius: 6px; }
+  .gallery figcaption { padding-top: 0.4rem; font: 400 0.85rem/1.45 var(--sans); color: var(--muted); }
+
+  /* ---------- Footer ---------- */
+  body > footer { border-top: 1px solid var(--rule); background: var(--band); }
+  body > footer .wrap {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 1.5rem;
+    padding-top: 1.75rem; padding-bottom: 2.5rem; font: 400 0.85rem var(--sans); color: var(--muted);
+  }
+
+  /* ---------- Smaller screens ---------- */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: minmax(0, 1fr); row-gap: 1.25rem; padding: 1.75rem 0 2.5rem; }
+    .hero-media { max-width: 34rem; }
+  }
+  @media (max-width: 760px) {
+    .topbar { position: static; }
+    .topbar .wrap { flex-wrap: wrap; row-gap: 0.4rem; padding-top: 0.6rem; padding-bottom: 0.5rem; }
+    .theme-toggle { margin-left: auto; }
+    .topbar nav { order: 3; flex-basis: 100%; margin-left: 0; }
+    .nav { gap: 0.2rem 1.1rem; }
+    .rows > section { grid-template-columns: minmax(0, 1fr); row-gap: 1rem; padding: 2.4rem 0; }
+    .rows > section > h1 { position: static; font-size: 1.75rem; }
+    .view:not(.home-view) .rows > section:first-child { padding-top: 2.4rem; padding-bottom: 3rem; }
+    .hero-media { padding-bottom: 4rem; }
+    .portrait { width: 10rem; height: 10rem; left: 1rem; }
+    .portrait .monogram { font-size: 3rem; }
+    .contact { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .contact dd { margin-bottom: 0.9rem; }
+    .artwork { grid-template-columns: minmax(0, 1fr); gap: 0.9rem; }
+    .stage-photo { float: none; width: 100%; max-width: 20rem; margin: 0.5rem 0 1.5rem; }
+  }
+  @media (max-width: 480px) {
+    .wrap { padding-left: 1rem; padding-right: 1rem; }
+    body { font-size: 1.0625rem; }
+  }
+
+  @media print {
+    .topbar nav, .theme-toggle, .skip { display: none; }
+    .topbar { position: static; }
+    body { background: #fff; color: #000; }
+    a { color: inherit; }
+    .rows > section { break-inside: avoid; }
+  }
+
+  /* ---------- Pages: only the chosen page shows (all show if JavaScript is off) ---------- */
+  .js .view { display: none; }
+  .js .view.is-active { display: block; }
+</style>
+</head>
+
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="#home">Rittwik Hajra</a>
+      <nav aria-label="Main">
+        <ul class="nav">
+          <li><a href="#home" aria-current="page">Home</a></li>
+          <li><a href="#publications">Publications</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#talks">Talks</a></li>
+          <li><a href="#miscellaneous">Miscellaneous</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================================================================ HOME -->
+    <div class="view home-view is-active" data-page="home">
+      <div class="wrap">
+        <header class="hero">
+          <div class="hero-media">
+            <!-- EDIT: the cover photo is cover.jpg next to this file (3:2 shape). Upload it with the site.
+                 A plain band shows if the file is missing. -->
+            <div class="cover no-photo">
+              <img src="cover.jpg" alt="The Delta Centre of the University of Tartu in evening light" width="1600" height="1067">
+            </div>
+            <!-- EDIT: the profile picture is photo.jpg next to this file (square). Upload it with the site.
+                 Your initials show if the file is missing. -->
+            <div class="portrait no-photo">
+              <img src="photo.jpg" alt="Portrait of Rittwik Hajra" width="900" height="900">
+              <span class="monogram" aria-hidden="true">RH</span>
+            </div>
+          </div>
+          <div class="hero-text">
+            <h1 class="name">Rittwik Hajra</h1>
+            <p class="role">Doctoral research student in cryptography</p>
+            <p class="affil">Institute of Computer Science, University of Tartu, Estonia</p>
+            <ul class="links">
+              <li><a href="https://scholar.google.com/citations?user=9etnbVwAAAAJ&amp;hl=en">Google Scholar</a></li>
+              <li><a href="https://dblp.org/pid/422/0251.html">DBLP</a></li>
+              <li><a href="https://www.linkedin.com/in/rittwik-hajra-a41719282">LinkedIn</a></li>
+              <li><a href="https://bsky.app/profile/tartarus75.bsky.social">Bluesky</a></li>
+              <!-- EDIT: to show a GitHub link, delete the comment markers around the next line.
+              <li><a href="https://github.com/RittwikH5712">GitHub</a></li>
+              -->
+              <!-- EDIT: CV button. Upload cv.pdf next to this file (remove your phone number and
+                   references first), then delete the comment markers around the next line.
+              <li><a class="cv" href="cv.pdf">CV</a></li>
+              -->
+            </ul>
+          </div>
+        </header>
+      </div>
+
+      <div class="wrap rows">
+        <section aria-labelledby="about-h">
+          <h2 id="about-h">About</h2>
+          <div class="content prose">
+            <p>I am a doctoral research fellow in the Institute of Computer Science at the University of Tartu, Estonia. I joined the university in September 2026 as a doctoral research student. I work under the supervision of <a href="https://sites.google.com/view/helgerlipmaa">Prof. Helger Lipmaa</a>.</p>
+            <p>I am a cryptography enthusiast. I am interested in post-quantum cryptography and zero-knowledge proofs. I enjoy designing protocols for privacy-preserving systems. I also work on SIMD vectorized implementations using AVX2 and <span class="nw">AVX-512</span>.</p>
+            <p>Before Tartu, I was a research associate at <a href="https://algobengal.com/">AlgoBengal Research Labs</a>. Before that, I was a research fellow at the R.C. Bose Centre for Cryptology and Security, Indian Statistical Institute, Kolkata.</p>
+            <p>I hold an M.Tech. in Cryptology and Security from the Indian Statistical Institute, Kolkata, and an M.Sc. in Pure Mathematics from the University of Calcutta. From my master's studies at ISI through the beginning of my Ph.D, I was mentored by <a href="https://pratyay.net/">Pratyay Mukherjee,</a> with <a href="https://sites.google.com/view/soumit-pal/">Soumit Pal</a> providing valuable research guidance during my initial research.</p>
+
+            <h3 class="label">Research interests</h3>
+            <ul class="interests">
+              <li>Post-quantum cryptography</li>
+              <li>Zero-knowledge proofs</li>
+              <li>Privacy-preserving protocols</li>
+              <li>Threshold cryptography and secret sharing</li>
+              <li>SIMD vectorized implementation using AVX2 and <span class="nw">AVX-512</span></li>
+            </ul>
+          </div>
+        </section>
+
+        <section aria-labelledby="recent-h">
+          <h2 id="recent-h">Recent papers</h2>
+          <div class="content">
+            <ol class="pubs">
+              <li class="pub">
+                <h3 class="pub-title">Binary Kummer Lines and Binary Edwards Curves: Efficient Two-way Vectorizations</h3>
+                <p class="pub-authors"><strong>Rittwik Hajra</strong>, Sabyasachi Karati and Tanushri Sen</p>
+                <p class="pub-meta">
+                  <span class="venue">ACM AsiaCCS 2026</span>
+                  <a href="https://dl.acm.org/doi/10.1145/3779208.3807491">ACM DL</a>
+                </p>
+              </li>
+              <li class="pub">
+                <h3 class="pub-title">MATSE: Amortized Threshold Symmetric Key Encryption for Matrices</h3>
+                <p class="pub-authors"><strong>Rittwik Hajra</strong>, Subha Kar and Pratyay Mukherjee</p>
+                <p class="pub-meta">
+                  <span class="venue">Africacrypt 2026</span>
+                  <a href="https://link.springer.com/chapter/10.1007/978-3-032-31130-6_10">Springer</a>
+                </p>
+              </li>
+              <li class="pub">
+                <h3 class="pub-title">Towards Public Tracing: Collaborative Traceable Secret Sharing</h3>
+                <p class="pub-authors">Pousali Dey, <strong>Rittwik Hajra</strong>, Subha Kar and Soumit Pal</p>
+                <p class="pub-meta">
+                  <span class="venue">ACISP 2026</span>
+                  <a href="https://eprint.iacr.org/2026/181">ePrint 2026/181</a>
+                </p>
+              </li>
+            </ol>
+            <p class="more"><a href="#publications">All publications</a></p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================================================================ PUBLICATIONS -->
+    <div class="view" data-page="publications">
+      <div class="wrap rows">
+        <section aria-labelledby="publications-h">
+          <h1 id="publications-h">Publications</h1>
+          <div class="content">
+            <p class="note">Authors are listed in alphabetical order, as is the convention in cryptography.</p>
+
+            <h2 class="year">2026</h2>
+            <ol class="pubs">
+              <li class="pub">
+                <h3 class="pub-title">Binary Kummer Lines and Binary Edwards Curves: Efficient Two-way Vectorizations</h3>
+                <p class="pub-authors"><strong>Rittwik Hajra</strong>, Sabyasachi Karati and Tanushri Sen</p>
+                <p class="pub-meta">
+                  <span class="venue">ACM AsiaCCS 2026</span>
+                  <a href="https://dl.acm.org/doi/10.1145/3779208.3807491">ACM DL</a>
+                </p>
+              </li>
+              <li class="pub">
+                <h3 class="pub-title">MATSE: Amortized Threshold Symmetric Key Encryption for Matrices</h3>
+                <p class="pub-authors"><strong>Rittwik Hajra</strong>, Subha Kar and Pratyay Mukherjee</p>
+                <p class="pub-meta">
+                  <span class="venue">Africacrypt 2026</span>
+                  <a href="https://link.springer.com/chapter/10.1007/978-3-032-31130-6_10">Springer</a>
+                </p>
+              </li>
+              <li class="pub">
+                <h3 class="pub-title">Towards Public Tracing: Collaborative Traceable Secret Sharing</h3>
+                <p class="pub-authors">Pousali Dey, <strong>Rittwik Hajra</strong>, Subha Kar and Soumit Pal</p>
+                <p class="pub-meta">
+                  <span class="venue">ACISP 2026</span>
+                  <a href="https://eprint.iacr.org/2026/181">ePrint 2026/181</a>
+                </p>
+              </li>
+            </ol>
+
+            <h2 class="year">2025</h2>
+            <ol class="pubs">
+              <li class="pub">
+                <h3 class="pub-title">Traceable Bottom-Up Secret Sharing and Law &amp; Order on Community Social Key Recovery</h3>
+                <p class="pub-authors"><strong>Rittwik Hajra</strong>, Subha Kar, Pratyay Mukherjee and Soumit Pal</p>
+                <p class="pub-meta">
+                  <span class="venue">Indocrypt 2025</span>
+                  <a href="https://eprint.iacr.org/2025/2089">ePrint 2025/2089</a>
+                </p>
+              </li>
+            </ol>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================================================================ EXPERIENCE -->
+    <div class="view" data-page="experience">
+      <div class="wrap rows">
+        <section aria-labelledby="experience-h">
+          <h1 id="experience-h">Experience</h1>
+          <div class="content">
+            <ol class="entries">
+              <li class="entry">
+                <div class="entry-head">
+                  <h2 class="entry-title">Doctoral Research Fellow</h2>
+                  <span class="entry-date">Sep 2026 – present</span>
+                </div>
+                <p class="entry-org">Institute of Computer Science, University of Tartu, Estonia</p>
+              </li>
+              <li class="entry">
+                <div class="entry-head">
+                  <h2 class="entry-title">Research Associate</h2>
+                  <span class="entry-date">Apr 2026 – Sep 2026</span>
+                </div>
+                <p class="entry-org"><a href="https://algobengal.com/">AlgoBengal Research Labs</a>, Kolkata, India</p>
+              </li>
+              <li class="entry">
+                <div class="entry-head">
+                  <h2 class="entry-title">Research Fellow</h2>
+                  <span class="entry-date">Sep 2025 – Mar 2026</span>
+                </div>
+                <p class="entry-org">R.C. Bose Centre for Cryptology and Security, Indian Statistical Institute, Kolkata, India</p>
+              </li>
+              <li class="entry">
+                <div class="entry-head">
+                  <h2 class="entry-title">Visiting Research Student</h2>
+                  <span class="entry-date">Feb 2025 – Jul 2025</span>
+                </div>
+                <p class="entry-org">University of Sydney, Australia</p>
+                <p class="entry-note">Master's thesis research with Dr. Sri Aravindakrishnan Thyagarajan.</p>
+              </li>
+            </ol>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================================================================ EDUCATION -->
+    <div class="view" data-page="education">
+      <div class="wrap rows">
+        <section aria-labelledby="education-h">
+          <h1 id="education-h">Education</h1>
+          <div class="content">
+            <ol class="entries">
+              <li class="entry">
+                <div class="entry-head">
+                  <h2 class="entry-title">Doctoral studies, Doctoral Fellow</h2>
+                  <span class="entry-date">Sep 2026 – present</span>
+                </div>
+                <p class="entry-org">Institute of Computer Science, University of Tartu, Estonia</p>
+                <p class="entry-note">Supervisor: <a href="https://sites.google.com/view/helgerlipmaa">Prof. Helger Lipmaa</a></p>
+              </li>
+              <li class="entry">
+                <div class="entry-head">
+                  <h2 class="entry-title">M.Tech in Cryptology and Security</h2>
+                  <span class="entry-date">Jul 2025</span>
+                </div>
+                <p class="entry-org">Indian Statistical Institute, Kolkata, India</p>
+              </li>
+              <li class="entry">
+                <div class="entry-head">
+                  <h2 class="entry-title">M.Sc in Pure Mathematics</h2>
+                  <span class="entry-date">Jul 2021</span>
+                </div>
+                <p class="entry-org">University of Calcutta, Kolkata, India</p>
+              </li>
+              <li class="entry">
+                <div class="entry-head">
+                  <h2 class="entry-title">B.Sc in Mathematics</h2>
+                  <span class="entry-date">Jun 2019</span>
+                </div>
+                <p class="entry-org">Mahishadal Raj College, Vidyasagar University, West Bengal, India</p>
+              </li>
+            </ol>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================================================================ TALKS -->
+    <div class="view" data-page="talks">
+      <div class="wrap rows">
+        <section aria-labelledby="talks-h">
+          <h1 id="talks-h">Talks</h1>
+          <div class="content">
+            <ol class="entries">
+              <li class="entry">
+                <div class="entry-head">
+                  <h2 class="entry-title">ACM AsiaCCS 2026</h2>
+                  <span class="entry-date">2026</span>
+                </div>
+                <p class="entry-org">Paper presentation: Binary Kummer Lines and Binary Edwards Curves</p>
+              </li>
+              <li class="entry">
+                <div class="entry-head">
+                  <h2 class="entry-title">Africacrypt 2026</h2>
+                  <span class="entry-date">2026</span>
+                </div>
+                <p class="entry-org">Paper presentation: MATSE</p>
+              </li>
+              <li class="entry">
+                <div class="entry-head">
+                  <h2 class="entry-title">Indocrypt 2025</h2>
+                  <span class="entry-date">2025</span>
+                </div>
+                <p class="entry-org">Paper presentation: Traceable Bottom-Up Secret Sharing</p>
+              </li>
+            </ol>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================================================================ MISCELLANEOUS -->
+    <div class="view" data-page="miscellaneous">
+      <div class="wrap rows">
+        <section aria-labelledby="miscellaneous-h">
+          <h1 id="miscellaneous-h">Miscellaneous</h1>
+          <div class="content">
+            <!-- Each topic is a fold-out panel. Click its title bar to open or close it. -->
+
+            <details class="drop">
+              <summary>
+                <h2 class="drop-title">Theatre</h2>
+                <span class="drop-teaser">Nineteen years on the Bengali stage, and directing <em>Ekalavya</em></span>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              </summary>
+              <div class="drop-body prose">
+
+                  <h3 class="part-title">Nineteen years on stage</h3>
+                  <p>Theatre has been at the center of my creative and personal life since childhood. I began acting in Bengali theatre at the age of seven. From 2007 until I moved to doctoral research in 2026, I was a member of the professional theatre troupe Suchetana Sanskritik Songstha in Haldia, India.</p>
+                  <p>Over these nineteen years and more than twenty major productions, the stage was my workshop. I learned every part of a production: acting, set design, lighting and direction. In most productions I acted. In others I worked behind the scenes. I built stage sets, handled the technical work, and designed the lighting to shape the mood and tension of each scene.</p>
+
+                  <h3 class="part-title">Directing <em>Ekalavya</em> (2021)</h3>
+                  <!-- EDIT: the stage photo lives at images/theatre/stage.jpg. Upload it with the site.
+                       A plain band shows if the file is missing. -->
+                  <figure class="figure stage-photo">
+                    <div class="slot no-photo">
+                      <img src="images/theatre/stage.jpg" alt="Rittwik Hajra as Arjun, holding a bow, in a stage production of Ekalavya" width="960" height="1200">
+                    </div>
+                    <figcaption>As Arjun in <em>Ekalavya</em>.</figcaption>
+                  </figure>
+                  <p>In 2021, I directed my first production, <em>Ekalavya</em>. I also played the major role of Arjun, and I designed and ran both the music and the lighting.</p>
+                  <p>The story comes from the Indian epic, the <em>Mahabharata</em>. The style, however, moved far away from traditional retellings. It brought together Indian myth, Norse mythology, neofolk music and Western tragic opera.</p>
+
+                  <h4 class="theme-title">Basanti and Gretchen</h4>
+                  <p>Traditional versions praise Ekalavya's devotion to archery as the perfect example of a disciple's dedication. Our production saw it differently. His obsession became a tragic isolation that slowly destroyed his human relationships.</p>
+                  <p>Ekalavya's wife, Basanti, was shaped as a parallel to Gretchen in Goethe's <em>Faust</em>. Faust abandons Gretchen in his search for power and knowledge. In the same way, Ekalavya spends days and nights alone in the forest, practicing to become the greatest archer in the world. Basanti is left alone and forgotten.</p>
+                  <p>In a central scene, Basanti sings an original Bengali translation of Schubert's song <em>Gretchen am Spinnrade</em> (Gretchen at the Spinning Wheel). As she sings, she turns a real spinning wheel on stage. The turning wheel stands for endless waiting, confinement and grief. It stands against the rigid curve of her husband's bow.</p>
+
+                  <h4 class="theme-title">Forest peoples and pagan Europe</h4>
+                  <p>A major theme was a parallel between the indigenous Adivasi and Nishada forest peoples of ancient India and the pagan tribes of pre-Christian Europe. The dominant Vedic order pushed aside and absorbed the Adivasi peoples, represented by Ekalavya's tribe. In a similar way, early Christianity in Europe suppressed its native pagan traditions. (I am not anti-Christian. I only observed a parallel.) The production explored how power, in different places and times, uses the same methods to erase nature-centered indigenous cultures.</p>
+
+                  <h4 class="theme-title">Drona as Odin</h4>
+                  <p>The story stayed with the <em>Mahabharata</em>, but almost every visual and structural element came from Old Norse myth. This brought out the harsh, primal nature of power and authority.</p>
+                  <p>The guru Dronacharya was framed as Odin, the one-eyed Allfather of Norse mythology, who gave up an eye in search of power and demands complete loyalty. On stage, the idol of Drona was sculpted as a one-eyed Odin. This linked Drona's favoritism toward Arjun with Odin's cold control over the fates of mortals.</p>
+
+                  <h4 class="theme-title">Music</h4>
+                  <p>To bring the ancient forest of the Adivasi lands together with Nordic antiquity, the score used Nordic neofolk and dark ambient music:</p>
+                  <ul class="bullets">
+                    <li><strong>Danheim:</strong> Viking drum rhythms for the training and archery scenes. They gave Ekalavya's obsession a heavy, ritual weight.</li>
+                    <li><strong>Wardruna, <em>Helvegen</em>:</strong> for moments of deep isolation, resignation and coming doom.</li>
+                    <li><strong>Burzum, <em>Die Liebe Nerþus</em>:</strong> deep ambient sound for the ancient forest, the untouched home of the tribe before conquest.</li>
+                  </ul>
+
+                  <!-- EDIT: optional list of other productions. Delete the comment markers to show it.
+                  <h3 class="part-title">Selected productions</h3>
+                  <ol class="entries">
+                    <li class="entry">
+                      <div class="entry-head">
+                        <h4 class="entry-title">Name of the play</h4>
+                        <span class="entry-date">Year</span>
+                      </div>
+                      <p class="entry-org">Your role</p>
+                      <p class="entry-note">A line or two about the production.</p>
+                    </li>
+                  </ol>
+                  -->
+
+              </div>
+            </details>
+
+            <details class="drop">
+              <summary>
+                <h2 class="drop-title">Paintings</h2>
+                <span class="drop-teaser">My paintings and the stories behind them</span>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              </summary>
+              <div class="drop-body prose">
+                <article class="artwork">
+                  <img src="images/paintings/birth-of-the-primordial.jpg" alt="A robed figure with arms spread wide stands on a red plain under a starry sky, where bands of blue and crimson light sweep across." width="900" height="1155" loading="lazy">
+                  <div>
+                    <h3 class="work-title">The Birth of the Primordial</h3>
+                    <p class="work-meta">Acrylic on canvas, 2022</p>
+                    <p>The background is heavily inspired by the video game <em>God of War Ragnarök</em>.</p>
+                  </div>
+                </article>
+
+                <article class="artwork wide">
+                  <div class="pair">
+                    <figure>
+                      <img src="images/paintings/erlking-pencil.jpg" alt="A pencil drawing of a man on a galloping horse. He holds a child who leans back, and a dark hooded figure with a pale, mask-like face looms above them." width="800" height="898" loading="lazy">
+                      <figcaption>The pencil drawing</figcaption>
+                    </figure>
+                    <figure>
+                      <img src="images/paintings/erlking-inverted.jpg" alt="The same drawing with its tones inverted, so the rider, child and horse appear pale against a dark ground." width="800" height="898" loading="lazy">
+                      <figcaption>The same drawing, inverted</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <h3 class="work-title">The Erlking</h3>
+                    <p class="work-meta">Inverted art, pencil on paper, 2022</p>
+                    <p>This work is heavily inspired by <em>Erlkönig</em> (Op. 1, D. 328), the landmark German art song (Lied) by Franz Schubert. Schubert composed it in 1815, setting the text of Johann Wolfgang von Goethe's famous dramatic ballad of 1782. He was just 18 years old. The song is celebrated as a masterpiece of the Romantic era for its intense drama, its psychological depth and its demanding piano accompaniment.</p>
+                  </div>
+                </article>
+
+                <article class="artwork">
+                  <img src="images/paintings/we-work-through-pain.jpg" alt="A huge green mask with hollow dark eyes hangs between two tall posts over dark water, under an orange and yellow sky. A small dark figure on the left is joined to it by a long cord." width="900" height="1121" loading="lazy">
+                  <div>
+                    <h3 class="work-title">We Work Through Pain</h3>
+                    <p class="work-meta">Acrylic on canvas, 2021</p>
+                    <p>A work of dystopian surrealism. It is inspired by the work of the Polish artist Zdzisław Beksiński.</p>
+                  </div>
+                </article>
+
+                <article class="artwork wide">
+                  <img src="images/paintings/untitled-2021.jpg" alt="A dark, misty painting in grey and blue. A tall head with a long, worn face rises from a dark hooded form, with a second face in profile below it. Thin dark hands reach up from the lower left." width="1400" height="1082" loading="lazy">
+                  <div>
+                    <h3 class="work-title">Untitled</h3>
+                    <p class="work-meta">Acrylic on canvas, 2021</p>
+                  </div>
+                </article>
+
+                <article class="artwork wide">
+                  <div class="pair">
+                    <figure>
+                      <img src="images/paintings/odin-pencil.jpg" alt="A pencil drawing of an old, long-haired, bearded man hanging by a rope beside a twisted tree with deep roots, his hands folded in front of him." width="800" height="1068" loading="lazy">
+                      <figcaption>The pencil drawing</figcaption>
+                    </figure>
+                    <figure>
+                      <img src="images/paintings/odin-inverted.jpg" alt="The same drawing with its tones inverted, so the tree and the hanging figure appear pale against a black ground." width="800" height="1068" loading="lazy">
+                      <figcaption>The same drawing, inverted</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <h3 class="work-title">Odin Hanging from Yggdrasil</h3>
+                    <p class="work-meta">Inverted art, pencil on paper, 2020</p>
+                    <p>In Norse mythology, Odin hanging from Yggdrasil is one of the most profound tales of ritual self-sacrifice. It is told mainly in the Old Norse poem <em>Hávamál</em> ("The Sayings of the High One") from the <em>Poetic Edda</em>. In it, the Allfather willingly goes through a brutal, nine-day ordeal to unlock the cosmic secrets of the runes.</p>
+                  </div>
+                </article>
+
+                <article class="artwork">
+                  <img src="images/paintings/schicchi-capocchio.jpg" alt="A pen sketch of two nude men locked in a fight. One arches over the other and bites his neck, while the other twists beneath him, down on one knee." width="1000" height="1000" loading="lazy">
+                  <div>
+                    <h3 class="work-title">Gianni Schicchi's Love Bite to Capocchio</h3>
+                    <p class="work-meta">Digital sketch, 2020</p>
+                    <p>This sketch is inspired directly by the classic painting <em>Dante and Virgil</em> by William-Adolphe Bouguereau, which shows a scene from Dante's <em>Inferno</em>. In the original painting, two men are locked in a fight. The attacker is Gianni Schicchi, and the victim is Capocchio.</p>
+                  </div>
+                </article>
+
+                <article class="artwork wide">
+                  <div class="pair stack">
+                    <figure>
+                      <img src="images/paintings/spectral-pencil.jpg" alt="A pencil drawing of a gaunt, dark figure seen from the side, with a thin, bony body and long outstretched arms, fading into grey paper." width="1400" height="697" loading="lazy">
+                      <figcaption>The pencil drawing</figcaption>
+                    </figure>
+                    <figure>
+                      <img src="images/paintings/spectral-inverted.jpg" alt="The same drawing with its tones inverted, so the figure appears pale and ghostly against a brownish-grey ground." width="1400" height="697" loading="lazy">
+                      <figcaption>The same drawing, inverted</figcaption>
+                    </figure>
+                  </div>
+                  <div>
+                    <h3 class="work-title">Spectral Visions of Mental Warfare</h3>
+                    <p class="work-meta">Inverted art, pencil on paper, 2020</p>
+                    <p>The title comes from an album and song of the same name by Nargaroth. The artwork takes direct inspiration from Zdzisław Beksiński.</p>
+                  </div>
+                </article>
+
+                <article class="artwork">
+                  <img src="images/paintings/hurnaz.jpg" alt="A tall horned figure holding a staff stands in silhouette among bare trees in a misty blue forest at night." width="900" height="1125" loading="lazy">
+                  <div>
+                    <h3 class="work-title">Hurnaz</h3>
+                    <p class="work-meta">Acrylic on canvas, 2020</p>
+                    <p class="runes" lang="und-Runr" aria-label="Hurnaz, written in Elder Futhark runes">ᚺᚢᚱᚾᚨᛉ</p>
+                    <p>Hurnaz is built on the ancient Proto-Germanic root for "horn", and here it means "the Horned One". The name is written in the runes of the Elder Futhark: <span class="rune">ᚺ</span> (Hagalaz), <span class="rune">ᚢ</span> (Uruz), <span class="rune">ᚱ</span> (Raidho), <span class="rune">ᚾ</span> (Nauthiz), <span class="rune">ᚨ</span> (Ansuz) and <span class="rune">ᛉ</span> (Algiz).</p>
+                  </div>
+                </article>
+
+                <article class="artwork wide">
+                  <img src="images/paintings/raven.jpg" alt="A large raven perched on a bare branch with a few small leaves, painted in deep blue against a pale, cloudy blue sky." width="1400" height="1052" loading="lazy">
+                  <div>
+                    <h3 class="work-title">The Raven of Allan Poe</h3>
+                    <p class="work-meta">Acrylic on canvas, 2020</p>
+                    <blockquote class="verse">
+                      <p>
+                        <span>And the Raven, never flitting, still is sitting, still is sitting</span>
+                        <span>On the pallid bust of Pallas just above my chamber door;</span>
+                        <span class="in1">And his eyes have all the seeming of a demon’s that is dreaming,</span>
+                        <span class="in1">And the lamp-light o’er him streaming throws his shadow on the floor;</span>
+                        <span>And my soul from out that shadow that lies floating on the floor</span>
+                        <span class="in2">Shall be lifted—nevermore!</span>
+                      </p>
+                      <footer>From <cite>The Raven</cite> by Edgar Allan Poe, 1845</footer>
+                    </blockquote>
+                  </div>
+                </article>
+
+                <article class="artwork">
+                  <img src="images/paintings/offering-to-cernunnos.jpg" alt="A dark forest of tall trees in grey and black. A huge antlered figure looms among the trunks above a stone stairway, a small masked figure raises an offering, and a cloaked guard with a spear stands at the lower right." width="900" height="1071" loading="lazy">
+                  <div>
+                    <h3 class="work-title">Offering to Cernunnos</h3>
+                    <p class="work-meta">Acrylic on canvas, 2020</p>
+                    <p>Cernunnos is the ancient Celtic "Lord of Wild Things". He was revered as a powerful god of nature, fertility and wealth. He is easily recognized by the stag antlers on his head, as on the famous Gundestrup Cauldron. He is often shown sitting cross-legged among forest animals, holding a sacred torc and a ram-horned serpent. These stand for the endless cycles of life, death and abundance.</p>
+                    <p>Today he is a central figure in modern Neopagan traditions. He stands for the untamed wilderness and for masculine energy.</p>
+                  </div>
+                </article>
+
+                <!-- EDIT: to add another painting, copy one <article class="artwork"> block above and
+                     change the picture, title, details and text. Images go in images/paintings. -->
+              </div>
+            </details>
+
+            <!-- EDIT: POEMS panel. Delete the comment markers around it to show it.
+                 Copy one <article class="poem"> block for each poem; line breaks are kept.
+            <details class="drop">
+              <summary>
+                <h2 class="drop-title">Poems</h2>
+                <span class="drop-teaser">A few poems I have written</span>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              </summary>
+              <div class="drop-body prose">
+                <article class="poem">
+                  <h3 class="work-title">Title of the poem</h3>
+                  <p class="poem-text">First line
+Second line
+Third line</p>
+                  <p class="work-meta">Year</p>
+                </article>
+              </div>
+            </details>
+            -->
+
+            <!-- EDIT: PHOTOGRAPHY panel. Delete the comment markers around it to show it.
+                 Copy one <figure> block for each photo. Images go in images/photography.
+            <details class="drop">
+              <summary>
+                <h2 class="drop-title">Photography</h2>
+                <span class="drop-teaser">Photos I have taken</span>
+                <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+              </summary>
+              <div class="drop-body">
+                <div class="gallery">
+                  <figure>
+                    <img src="images/photography/photo-1.jpg" alt="Describe the photo">
+                    <figcaption>Place, year</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </details>
+            -->
+
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================================================================ CONTACT -->
+    <div class="view" data-page="contact">
+      <div class="wrap rows">
+        <section aria-labelledby="contact-h">
+          <h1 id="contact-h">Contact</h1>
+          <div class="content">
+            <div class="prose">
+              <p>Email is the best way to reach me. Please use my university address first.</p>
+              <dl class="contact">
+                <dt>Main email</dt>
+                <dd class="email"><a href="mailto:rittwik.hajra@ut.ee">rittwik.hajra@ut.ee</a></dd>
+                <dt>Other email</dt>
+                <dd class="email"><a href="mailto:rittwik1729@gmail.com">rittwik1729@gmail.com</a></dd>
+                <dt>Address</dt>
+                <dd>Institute of Computer Science<br>University of Tartu<br>Tartu, Estonia</dd>
+              </dl>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>&copy; 2026 Rittwik Hajra</span>
+      <span>Last updated October 2026</span>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    var root = document.documentElement;
+
+    // Pages: the menu switches between them. The address ends in #publications, #talks and so on,
+    // so each page can be bookmarked or shared.
+    var titles = {
+      home: "Rittwik Hajra",
+      publications: "Publications | Rittwik Hajra",
+      experience: "Experience | Rittwik Hajra",
+      education: "Education | Rittwik Hajra",
+      talks: "Talks | Rittwik Hajra",
+      miscellaneous: "Miscellaneous | Rittwik Hajra",
+      contact: "Contact | Rittwik Hajra"
+    };
+    var views = document.querySelectorAll(".view");
+    var links = document.querySelectorAll(".nav a");
+    function show(name, scroll) {
+      if (!titles.hasOwnProperty(name)) return false;
+      Array.prototype.forEach.call(views, function (v) {
+        v.classList.toggle("is-active", v.getAttribute("data-page") === name);
+      });
+      Array.prototype.forEach.call(links, function (a) {
+        if (a.getAttribute("href") === "#" + name) a.setAttribute("aria-current", "page");
+        else a.removeAttribute("aria-current");
+      });
+      document.title = titles[name];
+      if (scroll) window.scrollTo(0, 0);
+      return true;
+    }
+    show(location.hash.slice(1), false);
+    window.addEventListener("hashchange", function () { show(location.hash.slice(1), true); });
+
+    // Light / dark switch. Follows the system setting until the visitor picks one.
+    var btn = document.querySelector(".theme-toggle");
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    function isDark() {
+      var t = root.getAttribute("data-theme");
+      return t ? t === "dark" : mq.matches;
+    }
+    function label() {
+      btn.setAttribute("aria-label", isDark() ? "Switch to light theme" : "Switch to dark theme");
+      btn.setAttribute("title", isDark() ? "Light theme" : "Dark theme");
+    }
+    label();
+    if (mq.addEventListener) mq.addEventListener("change", label);
+    btn.addEventListener("click", function () {
+      var next = isDark() ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+      label();
+    });
+
+    // Show cover.jpg, photo.jpg and the stage photo once they load. Until then (or if they
+    // are missing) a plain band or your initials show.
+    Array.prototype.forEach.call(document.querySelectorAll(".cover img, .portrait img, .slot img"), function (img) {
+      function shown() { if (img.naturalWidth > 0) img.parentNode.classList.remove("no-photo"); }
+      if (img.complete) shown(); else img.addEventListener("load", shown);
+    });
+  })();
+  </script>
+</body>
+</html>
