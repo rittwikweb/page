@@ -1,6 +1,6 @@
 # Rittwik Hajra — Personal Website
 
-Personal academic website of Rittwik Hajra, bringing together my research, publications, academic background, professional experience, talks, and interests beyond academia.
+Welcome to my personal webpage, bringing together my research, publications, academic background, professional experience, talks, and interests beyond academia.
 
 The website is built as a single `index.html` file, with the styling and JavaScript included in the same file. The different sections are accessible through the navigation menu and have individual URL fragments, making it easy to link directly to a particular section.
 
