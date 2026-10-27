@@ -1,70 +1,49 @@
-# Rittwik Hajra: academic website
+# Rittwik Hajra — Personal Website
 
-The whole site is one file, `index.html`. Its styles and script are inside it. The seven pages (Home, Publications, Experience, Education, Talks, Miscellaneous, Contact) switch from the top menu. Each page has its own address, such as `.../#publications`, so you can share a link to it.
+Personal academic website of Rittwik Hajra, bringing together my research, publications, academic background, professional experience, talks, and interests beyond academia.
 
-## Publish on GitHub Pages
+The website is built as a single `index.html` file, with the styling and JavaScript included in the same file. The different sections are accessible through the navigation menu and have individual URL fragments, making it easy to link directly to a particular section.
 
-1. Create a public repository named `<your-github-username>.github.io`.
-2. Upload `index.html` to the root of the repository.
-3. Open **Settings > Pages**. Under "Build and deployment", choose **Deploy from a branch**, then pick `main` and `/ (root)`. Save.
-4. After a minute or two, the site is live at `https://<your-github-username>.github.io`.
+## Website Structure
 
-## Things to fill in
+- **Home** — Introduction, research interests, academic profiles, and selected publications.
+- **Publications** — Research papers, preprints, and thesis.
+- **Experience** — Professional and research experience.
+- **Education** — Academic background.
+- **Talks** — Conference presentations and other talks.
+- **Miscellaneous** — Theatre, paintings, and other creative interests.
+- **Contact** — Contact information and relevant links.
 
-Search `index.html` for `EDIT:` to find each one.
+## Deployment
 
-| What | Where it goes |
-| --- | --- |
-| Google Scholar, DBLP, GitHub and LinkedIn links | The links under your name |
-| `cover.jpg` | Included (the Delta Centre). Keep it next to `index.html`. To change it, use another photo in 3:2 shape. |
-| `photo.jpg` | Included. Keep it next to `index.html`. To change it, use another square photo. |
-| `images/theatre/stage.jpg` | Included (you as Arjun). Keep it in `images/theatre/`. |
-| `cv.pdf` | Next to `index.html`. Remove your phone number and references first. |
-| `papers/kummer-asiaccs2026.pdf`, `papers/matse-africacrypt2026.pdf` | A `papers` folder, or swap the links for DOIs. Each link appears twice: on Home and on Publications. |
-| `papers/mtech-thesis.pdf` | A `papers` folder |
-| Paintings (and later poems, photography) | The Miscellaneous page |
+The website is hosted using GitHub Pages.
 
-Final layout of the repository:
+To deploy the site:
 
-```
-index.html
-cover.jpg          (included)
-photo.jpg          (included)
-cv.pdf
-papers/
-  kummer-asiaccs2026.pdf
-  matse-africacrypt2026.pdf
-  mtech-thesis.pdf
-images/
-  theatre/
-    stage.jpg
-  paintings/
-    birth-of-the-primordial.jpg
-    erlking-pencil.jpg
-    erlking-inverted.jpg
-    we-work-through-pain.jpg
-    untitled-2021.jpg
-    odin-pencil.jpg
-    odin-inverted.jpg
-    schicchi-capocchio.jpg
-    spectral-pencil.jpg
-    spectral-inverted.jpg
-    hurnaz.jpg
-    raven.jpg
-    offering-to-cernunnos.jpg
-  photography/
-```
+1. Create a public repository named `<username>.github.io`.
+2. Upload `index.html` and the associated assets to the repository root.
+3. Navigate to **Settings → Pages**.
+4. Under **Build and deployment**, select **Deploy from a branch**.
+5. Choose the `main` branch and `/ (root)` directory, then save.
+6. Once deployment is complete, the website will be available at `https://<username>.github.io`.
 
-## The Miscellaneous page
+No build step or package installation is required.
 
-Each topic is a fold-out panel: visitors click its title bar to open it.
+## Repository Structure
 
-- **Theatre** is complete.
-- **Paintings** has *The Birth of the Primordial*, *The Erlking*, *We Work Through Pain*, *Untitled* (2021), *Odin Hanging from Yggdrasil*, *Gianni Schicchi's Love Bite to Capocchio*, *Spectral Visions of Mental Warfare*, *Hurnaz*, *The Raven of Allan Poe* and *Offering to Cernunnos*. To add another painting, copy one `<article class="artwork">` block and change the picture, title, details and text. Images go in `images/paintings/`. For a full-width picture with the text below (good for wide paintings), use `<article class="artwork wide">`, as in *The Erlking*, *Untitled* and *Odin Hanging from Yggdrasil*. To stack two wide pictures one above the other, use `<div class="pair stack">`, as in *Spectral Visions of Mental Warfare*. To quote a poem with its line breaks, copy the `<blockquote class="verse">` block from *The Raven of Allan Poe*.
-- **Poems** and **Photography** panels are ready but hidden inside HTML comments. To show one, delete the `<!--` and `-->` around it.
-
-## Updating later
-
-- **New paper:** copy one `<li class="pub">` block on the Publications page. Also update "Recent papers" on Home.
-- **New position, degree or talk:** copy one `<li class="entry">` block on the right page.
-- **Footer date:** change "Last updated" near the bottom of the file.
+```text
+.
+├── index.html
+├── README.md
+├── cover.jpg
+├── photo.jpg
+├── cv.pdf
+├── papers/
+│   ├── kummer-asiaccs2026.pdf
+│   ├── matse-africacrypt2026.pdf
+│   └── mtech-thesis.pdf
+└── images/
+    ├── theatre/
+    │   └── stage.jpg
+    ├── paintings/
+    └── photography/
