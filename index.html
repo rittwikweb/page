@@ -244,6 +244,7 @@
   }
   .year::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
   .note + .year { margin-top: 0; }
+  .content > .year:first-child { margin-top: 0.35rem; }
 
   .pubs, .entries { list-style: none; padding: 0; margin: 0; }
   .pub { margin: 0 0 1.7rem; }
@@ -262,7 +263,7 @@
   .pub-desc { margin: 0.6rem 0 0.7rem; font-size: 1.02rem; max-width: 64ch; }
   .more { margin: 1.6rem 0 0; font: 500 0.95rem var(--sans); }
 
-  /* Experience, education, talks */
+  /* Experience, education, talks and services */
   .entry { margin: 0 0 1.55rem; }
   .entry:last-child { margin-bottom: 0; }
   .entry-head {
@@ -429,7 +430,7 @@
           <li><a href="#publications">Publications</a></li>
           <li><a href="#experience">Experience</a></li>
           <li><a href="#education">Education</a></li>
-          <li><a href="#talks">Talks</a></li>
+          <li><a href="#talks">Talks &amp; Services</a></li>
           <li><a href="#miscellaneous">Miscellaneous</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
@@ -676,31 +677,38 @@
     <div class="view" data-page="talks">
       <div class="wrap rows">
         <section aria-labelledby="talks-h">
-          <h1 id="talks-h">Talks</h1>
+          <h1 id="talks-h">Talks and Services</h1>
           <div class="content">
+            <h2 class="year">Talks</h2>
             <ol class="entries">
               <li class="entry">
                 <div class="entry-head">
-                  <h2 class="entry-title">ACM AsiaCCS 2026</h2>
+                  <h3 class="entry-title">ACM AsiaCCS 2026</h3>
                   <span class="entry-date">2026</span>
                 </div>
                 <p class="entry-org">Paper presentation: Binary Kummer Lines and Binary Edwards Curves</p>
               </li>
               <li class="entry">
                 <div class="entry-head">
-                  <h2 class="entry-title">Africacrypt 2026</h2>
+                  <h3 class="entry-title">Africacrypt 2026</h3>
                   <span class="entry-date">2026</span>
                 </div>
                 <p class="entry-org">Paper presentation: MATSE</p>
               </li>
               <li class="entry">
                 <div class="entry-head">
-                  <h2 class="entry-title">Indocrypt 2025</h2>
+                  <h3 class="entry-title">Indocrypt 2025</h3>
                   <span class="entry-date">2025</span>
                 </div>
                 <p class="entry-org">Paper presentation: Traceable Bottom-Up Secret Sharing</p>
               </li>
             </ol>
+
+            <h2 class="year">Services</h2>
+            <ul class="bullets">
+              <li>Volunteered in organising ACM AsiaCCS 2026, Bangalore, India</li>
+              <li>Organising Committee member, Asiacrypt 2024, Kolkata, India</li>
+            </ul>
           </div>
         </section>
       </div>
@@ -1001,7 +1009,7 @@ Third line</p>
       publications: "Publications | Rittwik Hajra",
       experience: "Experience | Rittwik Hajra",
       education: "Education | Rittwik Hajra",
-      talks: "Talks | Rittwik Hajra",
+      talks: "Talks and Services | Rittwik Hajra",
       miscellaneous: "Miscellaneous | Rittwik Hajra",
       contact: "Contact | Rittwik Hajra"
     };
