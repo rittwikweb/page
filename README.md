@@ -7,11 +7,11 @@ The website is built as a single `index.html` file, with the styling and JavaScr
 ## Website Structure
 
 - **Home** — Introduction, research interests, academic profiles, and selected publications.
-- **Publications** — Research papers, preprints, and thesis.
+- **Publications** — Research papers, preprints and thesis.
 - **Experience** — Professional and research experience.
 - **Education** — Academic background.
 - **Talks** — Conference presentations and other talks.
-- **Miscellaneous** — Theatre, paintings, and other creative interests.
+- **Miscellaneous** — Theatre, paintings and other creative interests.
 - **Contact** — Contact information and relevant links.
 
 ## Deployment
