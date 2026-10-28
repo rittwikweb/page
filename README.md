@@ -19,21 +19,3 @@ The website is built as a single `index.html` file, with the styling and JavaScr
 The website is hosted using GitHub Pages.
 
 
-## Repository Structure
-
-```text
-.
-├── index.html
-├── README.md
-├── cover.jpg
-├── photo.jpg
-├── cv.pdf
-├── papers/
-│   ├── kummer-asiaccs2026.pdf
-│   ├── matse-africacrypt2026.pdf
-│   └── mtech-thesis.pdf
-└── images/
-    ├── theatre/
-    │   └── stage.jpg
-    ├── paintings/
-    └── photography/
